@@ -1,9 +1,11 @@
+# encoding: utf-8
+
 from google.appengine.ext import ndb
 
 
 class User(ndb.Model):
     """Sub model for representing an user."""
-    name = ndb.StringProperty()
+    name = ndb.UserProperty()
     email = ndb.StringProperty()
 
 
