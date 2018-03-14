@@ -7,13 +7,21 @@ class User(ndb.Model):
     """Sub model for representing an user."""
     name = ndb.UserProperty()
     email = ndb.StringProperty()
+    group = ndb.StringProperty(default='user')
+
+
+class Product(ndb.Model):
+    """Sub model for representing a product."""
+    product = ndb.StringProperty()
+    unity = ndb.StringProperty()
+    user = ndb.StructuredProperty(User)
 
 
 class Purchase(ndb.Model):
     """Sub model for representing a purchase."""
-    product = ndb.StringProperty()
     brand = ndb.StringProperty()
     price = ndb.FloatProperty()
-    unity = ndb.StringProperty()
+    quantity = ndb.FloatProperty()
     purchase_date = ndb.DateTimeProperty(auto_now_add=True)
     user = ndb.StructuredProperty(User)
+    product = ndb.StructuredProperty(Product)
