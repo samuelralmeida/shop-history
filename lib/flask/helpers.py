@@ -934,7 +934,7 @@ class _PackageBoundObject(object):
             /myapplication.py
             /schema.sql
             /static
-                /style.css
+                /styles.css
             /templates
                 /layout.html
                 /index.html

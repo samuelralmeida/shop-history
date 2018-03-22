@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Criar produto</h5>
+                <form role="form" data-toggle="validator" class="form-product" method="POST">
+                    <div class="form-group">
+                        <input type="text" class="form-control name_product" name="product" placeholder="Nome do produto" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control unity_product" name="unity" placeholder="Unidade, exemplo: kg, pacote, litro..." required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-save-product">Salvar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -2,14 +2,16 @@
 
 import random
 import string
+import crud
 
 from google.appengine.api import users
 
 from flask import Flask, render_template, request
 from flask import session as login_session
+from flask_jsglue import JSGlue
 
 app = Flask(__name__)
-
+jsglue = JSGlue(app)
 
 def get_user():
     users.get_current_user()
@@ -40,10 +42,22 @@ def market():
     return 'mercado'
 
 
-@app.route('/create/product')
+@app.route('/create/product', methods=['GET', 'POST'])
 def create_product():
-    return 'criar produto'
+    data = request.json
+    if request.method == 'POST':
+        product_name = data.get('name')
+        unity = data.get('unity')
+        crud.add_product('samuel@gmail.com', product_name, unity)
+        return 'produto criado'
+    else:
+        return 'criar produto'
 
+
+@app.route('/products')
+def products():
+    text = 'pagina de produtos'
+    return render_template('products.html', text=text)
 
 @app.route('/edit/product')
 def edit_product():
@@ -53,6 +67,13 @@ def edit_product():
 @app.route('/delete/product')
 def delete_product():
     return 'deletar produto'
+
+
+@app.route('/get/products')
+def get_products():
+    email = request.args.get('email')
+    products = crud.get_products_by_user(email)
+    return [product for product in products]
 
 
 @app.route('/make/purchase')

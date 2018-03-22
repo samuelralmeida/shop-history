@@ -5,7 +5,7 @@ from google.appengine.ext import ndb
 
 class User(ndb.Model):
     """Sub model for representing an user."""
-    name = ndb.UserProperty()
+    name = ndb.StringProperty()
     email = ndb.StringProperty()
     group = ndb.StringProperty(default='user')
 
@@ -14,7 +14,7 @@ class Product(ndb.Model):
     """Sub model for representing a product."""
     product = ndb.StringProperty()
     unity = ndb.StringProperty()
-    user = ndb.StructuredProperty(User)
+    user = ndb.KeyProperty(kind=User)
 
 
 class Purchase(ndb.Model):
@@ -23,5 +23,5 @@ class Purchase(ndb.Model):
     price = ndb.FloatProperty()
     quantity = ndb.FloatProperty()
     purchase_date = ndb.DateTimeProperty(auto_now_add=True)
-    user = ndb.StructuredProperty(User)
-    product = ndb.StructuredProperty(Product)
+    user = ndb.KeyProperty(kind=User)
+    product = ndb.KeyProperty(kind=Product)
