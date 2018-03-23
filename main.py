@@ -1,17 +1,18 @@
 # encoding: utf-8
 
-import random
-import string
+# import random
+# import string
 import crud
 
 from google.appengine.api import users
 
-from flask import Flask, render_template, request
-from flask import session as login_session
+from flask import Flask, render_template, request, jsonify
+# from flask import session as login_session
 from flask_jsglue import JSGlue
 
 app = Flask(__name__)
 jsglue = JSGlue(app)
+
 
 def get_user():
     users.get_current_user()
@@ -46,8 +47,8 @@ def market():
 def create_product():
     data = request.json
     if request.method == 'POST':
-        product_name = data.get('name')
-        unity = data.get('unity')
+        product_name = data.get('name').lower().capitalize()
+        unity = data.get('unity').lower()
         crud.add_product('samuel@gmail.com', product_name, unity)
         return 'produto criado'
     else:
@@ -58,6 +59,7 @@ def create_product():
 def products():
     text = 'pagina de produtos'
     return render_template('products.html', text=text)
+
 
 @app.route('/edit/product')
 def edit_product():
@@ -72,8 +74,16 @@ def delete_product():
 @app.route('/get/products')
 def get_products():
     email = request.args.get('email')
-    products = crud.get_products_by_user(email)
-    return [product for product in products]
+    products_query = crud.get_products_by_user(email).fetch()
+    list_of_products = []
+    for product in products_query:
+        prod = {
+            'name': product.product,
+            'unity': product.unity,
+            'key': str(product.key.id())
+                }
+        list_of_products.append(prod)
+    return jsonify(list_of_products)
 
 
 @app.route('/make/purchase')

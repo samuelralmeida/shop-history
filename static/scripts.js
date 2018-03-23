@@ -56,8 +56,10 @@ function getProducts() {
        type: 'GET',
        data: data,
        success: function (response) {
+           $.each(response, function (index, value) {
+               listItemProduct(value);
+           });
            console.log('sucesso');
-           console.log(response)
        },
        error: function (response) {
            console.log('error');
@@ -67,4 +69,12 @@ function getProducts() {
            console.log('complete')
        }
    })
+}
+
+function listItemProduct(value) {
+    var listProducts = $('.list-products');
+    var li = $('<li/>');
+    li.addClass("list-group-item");
+    li.text(value.name);
+    li.appendTo(listProducts)
 }
