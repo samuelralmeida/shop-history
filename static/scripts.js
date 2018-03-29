@@ -1,6 +1,6 @@
 $(document).ready(function() {
     submitProduct();
-    getProducts()
+    getProducts();
 });
 
 function submitProduct() {
@@ -27,11 +27,9 @@ function submitProduct() {
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             success: function (response) {
-                console.log('sucesso');
                 console.log(response)
             },
             error: function (response) {
-                console.log('error');
                 console.log(response)
             },
             complete: function () {
@@ -40,6 +38,7 @@ function submitProduct() {
                 btnSaveProduct.prop("disabled", false);
                 nameProduct.prop("disabled", false);
                 unityProduct.prop("disabled", false);
+                getProducts();
             }
 
         })
@@ -47,7 +46,6 @@ function submitProduct() {
 }
 
 function getProducts() {
-    console.log('teste');
     var data = {
         'email': 'samuel@gmail.com'
     };
@@ -57,12 +55,10 @@ function getProducts() {
        data: data,
        success: function (response) {
            $.each(response, function (index, value) {
-               listItemProduct(value);
+               listItemProduct(index, value);
            });
-           console.log('sucesso');
        },
        error: function (response) {
-           console.log('error');
            console.log(response)
        },
        complete: function () {
@@ -71,10 +67,29 @@ function getProducts() {
    })
 }
 
-function listItemProduct(value) {
+function listItemProduct(index, value) {
     var listProducts = $('.list-products');
-    var li = $('<li/>');
-    li.addClass("list-group-item");
-    li.text(value.name);
-    li.appendTo(listProducts)
+    var li = '<li class="list-group-item list-product" data-index="' + index + '">';
+    li += '<div class="item-product">';
+    li += '<span>' + value.name + '</span>';
+    li += '<span class="float-right">';
+    li += '<button type="button" class="btn btn-warning" id="edit-item" onclick=askEdit('+index+');>Edit</button>';
+    li += '<button type="button" class="btn btn-danger" id="delete-item" onclick=askDelete('+index+');>Delete</button>';
+    li += '</span></div>';
+    li += '<div class="edit-product" data-key="' + value.key + '" hidden>';
+    li += '<span>Certeza que quer deletar o item?</span><span>SIM | NÃO</span></div>';
+    li += '<div class="delete-product" data-key="' + value.key + '" hidden>';
+    li += '<span>DELETAR ITEM</span></div></li>';
+
+    $(li).appendTo(listProducts)
+}
+
+function askDelete(index) {
+    var li = $("li[data-index='?']".replace('?', index));
+    li.find(".delete-product").removeAttr('hidden');
+}
+
+function askEdit(index) {
+    var li = $("li[data-index='?']".replace('?', index));
+    li.find(".edit-product").removeAttr('hidden');
 }

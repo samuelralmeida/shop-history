@@ -74,7 +74,7 @@ def delete_product():
 @app.route('/get/products')
 def get_products():
     email = request.args.get('email')
-    products_query = crud.get_products_by_user(email).fetch()
+    products_query = crud.get_products_by_user(email)
     list_of_products = []
     for product in products_query:
         prod = {

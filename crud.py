@@ -12,7 +12,7 @@ def add_user(name, email):
 
 
 def get_user_by_email(email):
-    user = model.User.query(model.User.email==email).get()
+    user = model.User.query(model.User.email == email).get()
     return user
 
 
